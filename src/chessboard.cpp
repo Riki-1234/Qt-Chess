@@ -70,31 +70,31 @@ posFileRank ChessBoard::posXYToPosFileRank(posXY position) {
     return positionFileRank;
 }
 
-std::vector<posFileRank> ChessBoard::getValidMoves(posXY sourcePosXY, ChessPiece piece) {
+std::vector<posFileRank> ChessBoard::getValidMoves(posXY sourcePos, ChessPiece piece) {
     std::vector<posFileRank> validMoves;
     if(piece == ChessPiece::W_Bishop || piece == ChessPiece::B_Bishop) {
         Bishop bishop;
-        validMoves = bishop.getValidMoves(sourcePosXY);
+        validMoves = bishop.getValidMoves(sourcePos);
     }
     else if(piece == ChessPiece::W_Rook || piece == ChessPiece::B_Rook) {
         Rook rook;
-        validMoves = rook.getValidMoves(sourcePosXY);
+        validMoves = rook.getValidMoves(sourcePos);
     }
     else if(piece == ChessPiece::W_Queen || piece == ChessPiece::B_Queen) {
         Queen queen;
-        validMoves = queen.getValidMoves(sourcePosXY);
+        validMoves = queen.getValidMoves(sourcePos);
     }
     else if(piece == ChessPiece::W_Knight || piece == ChessPiece::B_Knight) {
         Knight knight;
-        validMoves = knight.getValidMoves(sourcePosXY);
+        validMoves = knight.getValidMoves(sourcePos);
     }
     else if(piece == ChessPiece::W_King || piece == ChessPiece::B_King) {
         King king;
-        validMoves = king.getValidMoves(sourcePosXY);
+        validMoves = king.getValidMoves(sourcePos);
     }
     else if(piece == ChessPiece::W_Pawn || piece == ChessPiece::B_Pawn) {
         Pawn pawn;
-        validMoves = pawn.getValidMoves(sourcePosXY);
+        validMoves = pawn.getValidMoves(sourcePos);
     }
     return validMoves;
 }

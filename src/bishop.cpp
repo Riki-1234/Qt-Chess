@@ -1,21 +1,15 @@
 #include "bishop.hpp"
 
-bool Bishop::isValidMove(posXY sourcePos, posXY destPos) {
-    return (sourcePos.first - sourcePos.second == destPos.first - destPos.second)
-            || (sourcePos.first + sourcePos.second == destPos.first + destPos.second);
-}
-
 std::vector<posFileRank> Bishop::getValidMoves(posXY sourcePos) {
     std::vector<posFileRank> validMoves;
     FieldIterator it(sourcePos);
     do {
         it.moveDiagonalUpRight();
-        if(isValidMove(it.getSourcePos(), it.getCurrentPos()) && ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())] == ChessPiece::NoPiece) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        if(Piece::getDestPiece(it) == ChessPiece::NoPiece) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
         }
-        else if(isValidMove(it.getSourcePos(), it.getCurrentPos())
-                && !isFriendly(ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getSourcePos())], ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())])) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        else if(!isFriendly(Piece::getSourcePiece(it), Piece::getDestPiece(it))) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
             break;
         }
         else {
@@ -26,12 +20,11 @@ std::vector<posFileRank> Bishop::getValidMoves(posXY sourcePos) {
 
     do {
         it.moveDiagonalUpLeft();
-        if(isValidMove(it.getSourcePos(), it.getCurrentPos()) && ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())] == ChessPiece::NoPiece) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        if(Piece::getDestPiece(it) == ChessPiece::NoPiece) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
         }
-        else if(isValidMove(it.getSourcePos(), it.getCurrentPos())
-                && !isFriendly(ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getSourcePos())], ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())])) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        else if(!isFriendly(Piece::getSourcePiece(it), Piece::getDestPiece(it))) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
             break;
         }
         else {
@@ -42,12 +35,11 @@ std::vector<posFileRank> Bishop::getValidMoves(posXY sourcePos) {
 
     do {
         it.moveDiagonalDownLeft();
-        if(isValidMove(it.getSourcePos(), it.getCurrentPos()) && ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())] == ChessPiece::NoPiece) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        if(Piece::getDestPiece(it) == ChessPiece::NoPiece) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
         }
-        else if(isValidMove(it.getSourcePos(), it.getCurrentPos())
-                && !isFriendly(ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getSourcePos())], ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())])) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        else if(!isFriendly(Piece::getSourcePiece(it), Piece::getDestPiece(it))) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
             break;
         }
         else {
@@ -58,12 +50,11 @@ std::vector<posFileRank> Bishop::getValidMoves(posXY sourcePos) {
 
     do {
         it.moveDiagonalDownRight();
-        if(isValidMove(it.getSourcePos(), it.getCurrentPos()) && ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())] == ChessPiece::NoPiece) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        if(Piece::getDestPiece(it) == ChessPiece::NoPiece) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
         }
-        else if(isValidMove(it.getSourcePos(), it.getCurrentPos())
-                && !isFriendly(ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getSourcePos())], ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())])) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        else if(!isFriendly(Piece::getSourcePiece(it), Piece::getDestPiece(it))) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
             break;
         }
         else {

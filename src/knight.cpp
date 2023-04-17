@@ -22,11 +22,13 @@ std::vector<posFileRank> Knight::getValidMoves(posXY sourcePos) {
             return;
         }
         it.moveUp();
-        if(isValidMove(it.getSourcePos(), it.getCurrentPos())
-                && !isFriendly(ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getSourcePos())], ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())])) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        if(!isFriendly(Piece::getSourcePiece(it), Piece::getDestPiece(it)) && isValidMove(sourcePos, it.getCurrentPos())) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
         }
     };
+    rightUpMovement();
+    it.moveToSourcePos();
+
     auto rightDownMovement = [&]() -> void {
         it.moveRight();
         if(isPieceInWay(it.getCurrentPos())) {
@@ -37,11 +39,12 @@ std::vector<posFileRank> Knight::getValidMoves(posXY sourcePos) {
             return;
         }
         it.moveDown();
-        if(isValidMove(it.getSourcePos(), it.getCurrentPos())
-                && !isFriendly(ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getSourcePos())], ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())])) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        if(!isFriendly(Piece::getSourcePiece(it), Piece::getDestPiece(it)) && isValidMove(sourcePos, it.getCurrentPos())) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
         }
     };
+    rightDownMovement();
+    it.moveToSourcePos();
 
     auto leftUpMovement = [&]() -> void {
         it.moveLeft();
@@ -53,11 +56,13 @@ std::vector<posFileRank> Knight::getValidMoves(posXY sourcePos) {
             return;
         }
         it.moveUp();
-        if(isValidMove(it.getSourcePos(), it.getCurrentPos())
-                && !isFriendly(ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getSourcePos())], ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())])) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        if(!isFriendly(Piece::getSourcePiece(it), Piece::getDestPiece(it)) && isValidMove(sourcePos, it.getCurrentPos())) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
         }
     };
+    leftUpMovement();
+    it.moveToSourcePos();
+
     auto leftDownMovement = [&]() -> void {
         it.moveLeft();
         if(isPieceInWay(it.getCurrentPos())) {
@@ -68,11 +73,12 @@ std::vector<posFileRank> Knight::getValidMoves(posXY sourcePos) {
             return;
         }
         it.moveDown();
-        if(isValidMove(it.getSourcePos(), it.getCurrentPos())
-                && !isFriendly(ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getSourcePos())], ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())])) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        if(!isFriendly(Piece::getSourcePiece(it), Piece::getDestPiece(it)) && isValidMove(sourcePos, it.getCurrentPos())) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
         }
     };
+    leftDownMovement();
+    it.moveToSourcePos();
 
     auto upRightMovement = [&]() -> void {
         it.moveUp();
@@ -84,11 +90,13 @@ std::vector<posFileRank> Knight::getValidMoves(posXY sourcePos) {
             return;
         }
         it.moveRight();
-        if(isValidMove(it.getSourcePos(), it.getCurrentPos())
-                && !isFriendly(ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getSourcePos())], ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())])) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        if(!isFriendly(Piece::getSourcePiece(it), Piece::getDestPiece(it)) && isValidMove(sourcePos, it.getCurrentPos())) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
         }
     };
+    upRightMovement();
+    it.moveToSourcePos();
+
     auto upLeftMovement = [&]() -> void {
         it.moveUp();
         if(isPieceInWay(it.getCurrentPos())) {
@@ -99,11 +107,12 @@ std::vector<posFileRank> Knight::getValidMoves(posXY sourcePos) {
             return;
         }
         it.moveLeft();
-        if(isValidMove(it.getSourcePos(), it.getCurrentPos())
-                && !isFriendly(ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getSourcePos())], ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())])) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        if(!isFriendly(Piece::getSourcePiece(it), Piece::getDestPiece(it)) && isValidMove(sourcePos, it.getCurrentPos())) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
         }
     };
+    upLeftMovement();
+    it.moveToSourcePos();
 
     auto downRightMovement = [&]() -> void {
         it.moveDown();
@@ -115,11 +124,13 @@ std::vector<posFileRank> Knight::getValidMoves(posXY sourcePos) {
             return;
         }
         it.moveRight();
-        if(isValidMove(it.getSourcePos(), it.getCurrentPos())
-                && !isFriendly(ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getSourcePos())], ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())])) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        if(!isFriendly(Piece::getSourcePiece(it), Piece::getDestPiece(it)) && isValidMove(sourcePos, it.getCurrentPos())) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
         }
     };
+    downRightMovement();
+    it.moveToSourcePos();
+
     auto downLeftMovement = [&]() -> void {
         it.moveDown();
         if(isPieceInWay(it.getCurrentPos())) {
@@ -130,27 +141,10 @@ std::vector<posFileRank> Knight::getValidMoves(posXY sourcePos) {
             return;
         }
         it.moveLeft();
-        if(isValidMove(it.getSourcePos(), it.getCurrentPos())
-                && !isFriendly(ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getSourcePos())], ChessBoard::m_chessBoard[ChessBoard::posXYToPosFileRank(it.getCurrentPos())])) {
-            validMoves.push_back(ChessBoard::posXYToPosFileRank(it.getCurrentPos()));
+        if(!isFriendly(Piece::getSourcePiece(it), Piece::getDestPiece(it)) && isValidMove(sourcePos, it.getCurrentPos())) {
+            validMoves.push_back(Piece::getCurrentPosFileRank(it));
         }
     };
-
-    rightUpMovement();
-    it.moveToSourcePos();
-    rightDownMovement();
-    it.moveToSourcePos();
-    leftUpMovement();
-    it.moveToSourcePos();
-    leftDownMovement();
-    it.moveToSourcePos();
-
-    upRightMovement();
-    it.moveToSourcePos();
-    upLeftMovement();
-    it.moveToSourcePos();
-    downRightMovement();
-    it.moveToSourcePos();
     downLeftMovement();
 
     return validMoves;

@@ -2,8 +2,6 @@
 
 #include <QMainWindow>
 #include <memory>
-#include <vector>
-#include <string>
 #include "chesstypes.hpp"
 
 class ChessSquare;

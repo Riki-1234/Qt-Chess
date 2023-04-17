@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -25,9 +26,17 @@ enum class ChessPiece {
     B_Pawn
 };
 
-static std::vector<ChessPiece> w_pieces {
+static const std::vector<ChessPiece> w_pieces {
     ChessPiece::W_King, ChessPiece::W_Queen, ChessPiece::W_Bishop, ChessPiece::W_Knight, ChessPiece::W_Rook, ChessPiece::W_Pawn
 };
-static std::vector<ChessPiece> b_pieces {
+static const std::vector<ChessPiece> b_pieces {
     ChessPiece::B_King, ChessPiece::B_Queen, ChessPiece::B_Bishop, ChessPiece::B_Knight, ChessPiece::B_Rook, ChessPiece::B_Pawn
 };
+
+template<typename T>
+bool contains(const std::vector<T>& vec, const T& element) {
+    if(std::count(vec.begin(), vec.end(), element)) {
+        return true;
+    }
+    return false;
+}

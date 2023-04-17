@@ -178,8 +178,8 @@ void FieldIterator::moveToSourcePos() {
     checkLimits();
 }
 
-void FieldIterator::moveTo(posXY pos) {
-    m_currentPos = pos;
+void FieldIterator::moveTo(posXY position) {
+    m_currentPos = position;
     checkLimits();
 }
 

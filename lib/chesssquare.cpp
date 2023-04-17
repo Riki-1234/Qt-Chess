@@ -27,7 +27,7 @@ void ChessSquare::setPieceOnSquare(ChessPiece piece) {
 
 void ChessSquare::updateImage() {
     setIcon(QIcon(m_chessPieceImages.at(m_pieceOnSquare)));
-    setIconSize(QSize(42, 256));
+    setIconSize(QSize(48, 256));
 }
 
 ChessPiece ChessSquare::getPieceOnSquare() const {

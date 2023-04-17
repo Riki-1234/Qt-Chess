@@ -31,7 +31,7 @@ public:
     void moveDiagonalDownRight();
 
     void moveToSourcePos();
-    void moveTo(posXY pos);
+    void moveTo(posXY position);
     void checkLimits();
 
     posXY getCurrentPos() const;

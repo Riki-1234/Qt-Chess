@@ -105,6 +105,9 @@ void FieldIterator::moveDiagonalUpRight() {
     if(m_currentPos.first == 8) {
         m_rightLimit = true;
     }
+    if(m_upLimit || m_rightLimit) {
+        return;
+    }
 
     m_currentPos.first++;
     m_currentPos.second++;
@@ -123,6 +126,9 @@ void FieldIterator::moveDiagonalUpLeft() {
     }
     if(m_currentPos.first == 1) {
         m_leftLimit = true;
+    }
+    if(m_upLimit || m_leftLimit) {
+        return;
     }
 
     m_currentPos.first--;
@@ -143,6 +149,9 @@ void FieldIterator::moveDiagonalDownRight() {
     if(m_currentPos.first == 8) {
         m_rightLimit = true;
     }
+    if(m_downLimit || m_rightLimit) {
+        return;
+    }
 
     m_currentPos.first++;
     m_currentPos.second--;
@@ -161,6 +170,9 @@ void FieldIterator::moveDiagonalDownLeft() {
     }
     if(m_currentPos.first == 1) {
         m_leftLimit = true;
+    }
+    if(m_downLimit || m_leftLimit) {
+        return;
     }
 
     m_currentPos.first--;

@@ -1,8 +1,11 @@
 #include "queen.hpp"
 
-std::vector<posFileRank> Queen::getValidMoves(posXY sourcePos) {
+Queen::Queen(posXY sourcePos) :
+    m_sourcePos(sourcePos) {}
+
+std::vector<posFileRank> Queen::getValidMoves() {
     std::vector<posFileRank> validMoves;
-    FieldIterator it(sourcePos);
+    FieldIterator it(m_sourcePos);
     do {
         it.moveRight();
         if(Piece::getDestPiece(it) == ChessPiece::NoPiece) {

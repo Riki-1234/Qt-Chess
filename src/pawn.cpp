@@ -1,8 +1,11 @@
 #include "pawn.hpp"
 
-std::vector<posFileRank> Pawn::getValidMoves(posXY sourcePos) {
+Pawn::Pawn(posXY sourcePos) :
+    m_sourcePos(sourcePos) {}
+
+std::vector<posFileRank> Pawn::getValidMoves() {
     std::vector<posFileRank> validMoves;
-    FieldIterator it(sourcePos);
+    FieldIterator it(m_sourcePos);
 
     if(Piece::getSourcePiece(it) == ChessPiece::B_Pawn) {
         if(it.getSourcePos().second == 2) {

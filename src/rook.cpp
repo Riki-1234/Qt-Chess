@@ -1,8 +1,11 @@
 #include "rook.hpp"
 
-std::vector<posFileRank> Rook::getValidMoves(posXY sourcePos) {
+Rook::Rook(posXY sourcePos) :
+    m_sourcePos(sourcePos) {}
+
+std::vector<posFileRank> Rook::getValidMoves() {
     std::vector<posFileRank> validMoves;
-    FieldIterator it(sourcePos);
+    FieldIterator it(m_sourcePos);
     do {
         it.moveRight();
         if(Piece::getDestPiece(it) == ChessPiece::NoPiece) {

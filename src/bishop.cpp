@@ -1,8 +1,11 @@
 #include "bishop.hpp"
 
-std::vector<posFileRank> Bishop::getValidMoves(posXY sourcePos) {
+Bishop::Bishop(posXY sourcePos) :
+    m_sourcePos(sourcePos) {}
+
+std::vector<posFileRank> Bishop::getValidMoves() {
     std::vector<posFileRank> validMoves;
-    FieldIterator it(sourcePos);
+    FieldIterator it(m_sourcePos);
     do {
         it.moveDiagonalUpRight();
         if(Piece::getDestPiece(it) == ChessPiece::NoPiece) {

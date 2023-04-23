@@ -5,5 +5,8 @@
 class Queen : Piece
 {
 public:
-    std::vector<posFileRank> getValidMoves(posXY sourcePos);
+    Queen(posXY sourcePos);
+    std::vector<posFileRank> getValidMoves();
+private:
+    posXY m_sourcePos;
 };

@@ -5,5 +5,8 @@
 class Rook : Piece
 {
 public:
-    std::vector<posFileRank> getValidMoves(posXY sourcePos);
+    Rook(posXY sourcePos);
+    std::vector<posFileRank> getValidMoves();
+private:
+    posXY m_sourcePos;
 };

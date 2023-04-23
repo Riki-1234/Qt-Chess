@@ -5,5 +5,8 @@
 class Bishop : Piece
 {
 public:
-    std::vector<posFileRank> getValidMoves(posXY sourcePos);
+    Bishop(posXY sourcePos);
+    std::vector<posFileRank> getValidMoves();
+private:
+    posXY m_sourcePos;
 };

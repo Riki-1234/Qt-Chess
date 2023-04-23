@@ -6,6 +6,8 @@
 #include <QFile>
 #include "window.hpp"
 #include "chessboard.hpp"
+#include "piece.hpp"
+#include "chessgame.hpp"
 #include "./ui_window.h"
 
 Window::Window(QWidget *parent)
@@ -39,6 +41,9 @@ void Window::mousePressEvent(QMouseEvent* event) {
     }
     qDebug() << m_sourceButton;
 
+    if(ChessGame::isCheckMate(m_sourceButton->getPieceOnSquare())) {
+        qDebug() << "It's a checkmate";
+    }
     highlightValidMoves(m_sourceButton->getPieceOnSquare(), m_sourceButton->squarePosition());
     QPixmap pixmap(m_sourceButton->icon().pixmap(m_sourceButton->iconSize()));
     QCursor cursor(pixmap);
@@ -73,8 +78,8 @@ void Window::mouseReleaseEvent(QMouseEvent* event) {
         targetButton->setIcon(m_sourceButtonIcon);
         targetButton->setPieceOnSquare(m_sourceButton->getPieceOnSquare());
         m_sourceButton->setPieceOnSquare(ChessPiece::NoPiece);
-        ChessBoard::m_chessBoard[targetButton->squarePosition()] = ChessBoard::m_chessBoard[m_sourceButton->squarePosition()];
-        ChessBoard::m_chessBoard[m_sourceButton->squarePosition()] = ChessPiece::NoPiece;
+        Piece::setPieceAtPos(targetButton->squarePosition(), Piece::getPieceAtPos(m_sourceButton->squarePosition()));
+        Piece::setPieceAtPos(m_sourceButton->squarePosition(), ChessPiece::NoPiece);
     }
     else {
         m_sourceButton->setIcon(QIcon(m_sourceButtonIcon));
@@ -99,8 +104,8 @@ void Window::updateBoard() {
         const auto& button = qobject_cast<ChessSquare*>(child);
         for(const auto& fieldName : m_fieldNames) {
             if(button && button->objectName().contains(QString::fromStdString("field_") + QString::fromStdString(fieldName))) {
-                if(ChessBoard::m_chessBoard[fieldName] != button->getPieceOnSquare()) {
-                    button->setPieceOnSquare(ChessBoard::m_chessBoard[fieldName]);
+                if(Piece::getPieceAtPos(fieldName) != button->getPieceOnSquare()) {
+                    button->setPieceOnSquare(Piece::getPieceAtPos(fieldName));
                 }
             }
         }
@@ -113,6 +118,9 @@ void Window::highlightValidMoves(ChessPiece piece, posFileRank sourcePos) {
     for(const auto& child : children) {
         const auto& button = qobject_cast<ChessSquare*>(child);
         for(int i = 0; i < m_validMoves.size(); i++) {
+            if(Piece::getPieceAtPos(m_validMoves[i]) == ChessPiece::B_King || Piece::getPieceAtPos(m_validMoves[i]) == ChessPiece::W_King) {
+                continue;
+            }
             if(button && button->objectName().contains("field_" + QString::fromStdString(m_validMoves[i]))) {
                 m_originalStyleSheets.push_back({m_validMoves[i], button->styleSheet()});
                 button->setStyleSheet("color: rgb(107,107,110);"

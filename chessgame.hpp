@@ -5,8 +5,12 @@
 class ChessGame
 {
 public:
-    static bool isCheckMate(ChessPiece king);
-    static bool isCheck(ChessPiece king);
+    static bool isCheckMate(ChessPiece piece);
+    static bool isCheck(ChessPiece piece);
+    static PieceColor getCurrentPlayer();
+    static void setCurrentPlayer(PieceColor color);
+    static void gameLoop();
+    static void gameStart();
 private:
-    void gameLoop();
+    static PieceColor m_currentPlayer;
 };

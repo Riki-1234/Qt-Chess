@@ -4,6 +4,8 @@
 #include <QMouseEvent>
 #include <QString>
 #include <QFile>
+#include <QTimer>
+#include <QThread>
 #include "window.hpp"
 #include "chessboard.hpp"
 #include "piece.hpp"
@@ -15,8 +17,12 @@ Window::Window(QWidget *parent)
     , ui(new Ui::window)
 {
     ui->setupUi(this);
+    ui->centralwidget->setMinimumWidth(967);
+    ui->centralwidget->setMinimumHeight(739);
 
     allowClicks();
+    setUnderLinesInvisible();
+    setupTimers();
 
     m_sourceButton = nullptr;
 
@@ -29,6 +35,10 @@ Window::Window(QWidget *parent)
 }
 
 void Window::mousePressEvent(QMouseEvent* event) {
+    if(event->button() == Qt::RightButton) {
+        m_sourceButton->setIcon(QIcon(m_sourceButtonIcon));
+    }
+
     qDebug() << "Press event is called at position: " << QCursor::pos();
 
     QPoint buttonPos = ui->centralwidget->mapFromGlobal(QCursor::pos());
@@ -41,8 +51,15 @@ void Window::mousePressEvent(QMouseEvent* event) {
     }
     qDebug() << m_sourceButton;
 
-    if(ChessGame::isCheckMate(m_sourceButton->getPieceOnSquare())) {
-        qDebug() << "It's a checkmate";
+    if(contains(w_pieces, m_sourceButton->getPieceOnSquare())) {
+        m_king = ChessPiece::W_King;
+    }
+    else {
+        m_king = ChessPiece::B_King;
+    }
+
+    if(!ChessBoard::isMovePossible(m_topTimer->isActive(), m_bottomTimer->isActive(), m_sourceButton->getPieceOnSquare(), m_king)) {
+        return;
     }
     highlightValidMoves(m_sourceButton->getPieceOnSquare(), m_sourceButton->squarePosition());
     QPixmap pixmap(m_sourceButton->icon().pixmap(m_sourceButton->iconSize()));
@@ -55,6 +72,10 @@ void Window::mousePressEvent(QMouseEvent* event) {
 }
 
 void Window::mouseReleaseEvent(QMouseEvent* event) {
+    if(!ChessBoard::isMovePossible(m_topTimer->isActive(), m_bottomTimer->isActive(), m_sourceButton->getPieceOnSquare(), m_king)) {
+        return;
+    }
+
     qDebug() << "Release event is called at position: " << QCursor::pos();
     unsetCursor();
 
@@ -80,6 +101,45 @@ void Window::mouseReleaseEvent(QMouseEvent* event) {
         m_sourceButton->setPieceOnSquare(ChessPiece::NoPiece);
         Piece::setPieceAtPos(targetButton->squarePosition(), Piece::getPieceAtPos(m_sourceButton->squarePosition()));
         Piece::setPieceAtPos(m_sourceButton->squarePosition(), ChessPiece::NoPiece);
+
+        if(ChessGame::getCurrentPlayer() == PieceColor::White) {
+            ChessGame::setCurrentPlayer(PieceColor::Black);
+        }
+        else {
+            ChessGame::setCurrentPlayer(PieceColor::White);
+        }
+        startOneStopOtherTimer();
+
+        if(ChessGame::isCheckMate(ChessPiece::B_King)) {
+            ui->outcome->setText("White won");
+            if(m_topTimer->isActive()) {
+                m_topTimer->stop();
+                if(ui->topLine->isVisible()) {
+                    ui->topLine->setVisible(false);
+                }
+            }
+            if(m_bottomTimer->isActive()) {
+                m_bottomTimer->stop();
+                if(ui->bottomLine->isVisible()) {
+                    ui->bottomLine->setVisible(false);
+                }
+            }
+        }
+        else if(ChessGame::isCheckMate(ChessPiece::W_King)) {
+            ui->outcome->setText("Black won");
+            if(m_topTimer->isActive()) {
+                m_topTimer->stop();
+                if(ui->topLine->isVisible()) {
+                    ui->topLine->setVisible(false);
+                }
+            }
+            if(m_bottomTimer->isActive()) {
+                m_bottomTimer->stop();
+                if(ui->bottomLine->isVisible()) {
+                    ui->bottomLine->setVisible(false);
+                }
+            }
+        }
     }
     else {
         m_sourceButton->setIcon(QIcon(m_sourceButtonIcon));
@@ -144,6 +204,102 @@ void Window::changeValidButtonsToDefaultColor() {
             }
         }
     }
+}
+
+void Window::timeChangeTopTimer() {
+    m_remainingTimeTop--;
+    if(m_remainingTimeTop == 0) {
+        m_topTimer->stop();
+        ui->topLine->setVisible(false);
+        if(ChessBoard::getPieceColor() == PieceColor::Black) {
+            ui->outcome->setText("Black won");
+        }
+        else {
+            ui->outcome->setText("White won");
+        }
+    }
+
+    int minutes = m_remainingTimeTop / 60;
+    int seconds = m_remainingTimeTop % 60;
+
+    QString timeString = QString("%1:%2")
+                              .arg(minutes, 2, 10, QLatin1Char('0'))
+                              .arg(seconds, 2, 10, QLatin1Char('0'));
+    ui->topTimer->setText(timeString);
+}
+
+void Window::timeChangeBottomTimer() {
+    m_remainingTimeBottom--;
+    if(m_remainingTimeBottom == 0) {
+        m_bottomTimer->stop();
+        ui->bottomLine->setVisible(false);
+        if(ChessBoard::getPieceColor() == PieceColor::Black) {
+            ui->outcome->setText("White won");
+        }
+        else {
+            ui->outcome->setText("Black won");
+        }
+    }
+
+    int minutes = m_remainingTimeBottom / 60;
+    int seconds = m_remainingTimeBottom % 60;
+
+    QString timeString = QString("%1:%2")
+                              .arg(minutes, 2, 10, QLatin1Char('0'))
+                              .arg(seconds, 2, 10, QLatin1Char('0'));
+    ui->bottomTimer->setText(timeString);
+}
+
+void Window::setupTimers() {
+    m_topTimer = new QTimer(this);
+    connect(m_topTimer, &QTimer::timeout, this, &Window::timeChangeTopTimer);
+    int minutes = m_remainingTimeTop / 60;
+    int seconds = m_remainingTimeTop % 60;
+
+    QString timeString = QString("%1:%2")
+                              .arg(minutes, 2, 10, QLatin1Char('0'))
+                              .arg(seconds, 2, 10, QLatin1Char('0'));
+    ui->topTimer->setText(timeString);
+
+    m_bottomTimer = new QTimer(this);
+    connect(m_bottomTimer, &QTimer::timeout, this, &Window::timeChangeBottomTimer);
+    minutes = m_remainingTimeBottom / 60;
+    seconds = m_remainingTimeBottom % 60;
+
+    timeString = QString("%1:%2")
+                              .arg(minutes, 2, 10, QLatin1Char('0'))
+                              .arg(seconds, 2, 10, QLatin1Char('0'));
+    ui->bottomTimer->setText(timeString);
+
+
+    if(ChessBoard::getPieceColor() == PieceColor::Black) {
+        m_topTimer->start(1000);
+        ui->topLine->setVisible(true);
+    }
+    else {
+        m_bottomTimer->start(1000);
+        ui->bottomLine->setVisible(true);
+    }
+}
+
+void Window::startOneStopOtherTimer() {
+    if(m_topTimer->isActive()) {
+        m_topTimer->stop();
+        ui->topLine->setVisible(false);
+        m_bottomTimer->start(1000);
+        ui->bottomLine->setVisible(true);
+    }
+    else {
+        m_bottomTimer->stop();
+        ui->bottomLine->setVisible(false);
+        m_topTimer->start(1000);
+        ui->topLine->setVisible(true);
+    }
+}
+
+void Window::setUnderLinesInvisible() {
+    ui->topLine->setVisible(false);
+    ui->bottomLine->setVisible(false);
 }
 
 Window::~Window()

@@ -2,7 +2,15 @@
 #include "chessboard.hpp"
 #include "king.hpp"
 
-bool ChessGame::isCheckMate(ChessPiece king) {
+bool ChessGame::isCheckMate(ChessPiece piece) {
+    ChessPiece king;
+    if(contains(w_pieces, piece)) {
+        king = ChessPiece::W_King;
+    }
+    else {
+        king = ChessPiece::B_King;
+    }
+
     posFileRank kingPos;
     for(auto it = ChessBoard::m_chessBoard.begin(); it != ChessBoard::m_chessBoard.end(); it++) {
         if(it->second == king) {
@@ -13,14 +21,25 @@ bool ChessGame::isCheckMate(ChessPiece king) {
     if(isCheck(king)) {
         King king(ChessBoard::posFileRankToPosXY(kingPos));
         auto kingMoves = king.getValidMoves();
-        if(kingMoves.empty()) {
-            return true;
+        for(int i = 0; i < kingMoves.size(); i++) {
+            if(Piece::getPieceAtPos(kingMoves[i]) == ChessPiece::NoPiece) {
+                return false;
+            }
         }
+        return true;
     }
     return false;
 }
 
-bool ChessGame::isCheck(ChessPiece king) {
+bool ChessGame::isCheck(ChessPiece piece) {
+    ChessPiece king;
+    if(contains(w_pieces, piece)) {
+        king = ChessPiece::W_King;
+    }
+    else {
+        king = ChessPiece::B_King;
+    }
+
     posFileRank kingPos;
     for(auto it = ChessBoard::m_chessBoard.begin(); it != ChessBoard::m_chessBoard.end(); it++) {
         if(it->second == king) {
@@ -45,15 +64,14 @@ bool ChessGame::isCheck(ChessPiece king) {
     return false;
 }
 
-void ChessGame::gameLoop() {
-    while(true) {
+PieceColor ChessGame::m_currentPlayer = PieceColor::White;
 
-
-        if(isCheckMate(ChessPiece::B_King)) {
-            break;
-        }
-        else if(isCheckMate(ChessPiece::W_King)) {
-            break;
-        }
-    }
+PieceColor ChessGame::getCurrentPlayer() {
+    return m_currentPlayer;
 }
+
+void ChessGame::setCurrentPlayer(PieceColor color) {
+    m_currentPlayer = color;
+}
+
+

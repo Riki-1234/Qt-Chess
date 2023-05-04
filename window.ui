@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>740</width>
+    <width>967</width>
     <height>739</height>
    </rect>
   </property>
@@ -32,6 +32,12 @@ background-color: #fff;</string>
   <widget class="QWidget" name="centralwidget">
    <property name="enabled">
     <bool>true</bool>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>967</width>
+     <height>739</height>
+    </size>
    </property>
    <property name="focusPolicy">
     <enum>Qt::NoFocus</enum>
@@ -3195,6 +3201,217 @@ padding: 10px;
      </size>
     </property>
    </widget>
+   <widget class="QLabel" name="topTimer">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>60</y>
+      <width>171</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>48</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(107,107,110);
+background-color: rgb(253, 253, 230);</string>
+    </property>
+    <property name="text">
+     <string>Timer</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="bottomTimer">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>600</y>
+      <width>171</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>48</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(107,107,110);
+background-color: rgb(253, 253, 230);</string>
+    </property>
+    <property name="text">
+     <string>Timer</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="outcome">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>330</y>
+      <width>171</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>24</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(107,107,110);
+background-color: rgb(253, 253, 220);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="topLine">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>140</y>
+      <width>171</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>24</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(107,107,110);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="bottomLine">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>680</y>
+      <width>171</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>24</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(107,107,110);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="background">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>10</y>
+      <width>221</width>
+      <height>721</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>28</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(253, 253, 230);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>background</zorder>
+   <zorder>field_A8</zorder>
+   <zorder>field_H8</zorder>
+   <zorder>field_A1</zorder>
+   <zorder>field_H1</zorder>
+   <zorder>field_A7</zorder>
+   <zorder>field_B7</zorder>
+   <zorder>field_C7</zorder>
+   <zorder>field_D7</zorder>
+   <zorder>field_H7</zorder>
+   <zorder>field_G7</zorder>
+   <zorder>field_F7</zorder>
+   <zorder>field_E7</zorder>
+   <zorder>field_D6</zorder>
+   <zorder>field_G6</zorder>
+   <zorder>field_C6</zorder>
+   <zorder>field_F6</zorder>
+   <zorder>field_B6</zorder>
+   <zorder>field_H6</zorder>
+   <zorder>field_E6</zorder>
+   <zorder>field_A6</zorder>
+   <zorder>field_D5</zorder>
+   <zorder>field_G5</zorder>
+   <zorder>field_C5</zorder>
+   <zorder>field_F5</zorder>
+   <zorder>field_B5</zorder>
+   <zorder>field_H5</zorder>
+   <zorder>field_E5</zorder>
+   <zorder>field_A5</zorder>
+   <zorder>field_D4</zorder>
+   <zorder>field_G4</zorder>
+   <zorder>field_F2</zorder>
+   <zorder>field_E3</zorder>
+   <zorder>field_H2</zorder>
+   <zorder>field_H4</zorder>
+   <zorder>field_E4</zorder>
+   <zorder>field_A4</zorder>
+   <zorder>field_F4</zorder>
+   <zorder>field_C4</zorder>
+   <zorder>field_G3</zorder>
+   <zorder>field_F3</zorder>
+   <zorder>field_A2</zorder>
+   <zorder>field_B3</zorder>
+   <zorder>field_G2</zorder>
+   <zorder>field_A3</zorder>
+   <zorder>field_C3</zorder>
+   <zorder>field_C2</zorder>
+   <zorder>field_D2</zorder>
+   <zorder>field_B4</zorder>
+   <zorder>field_D3</zorder>
+   <zorder>field_E2</zorder>
+   <zorder>field_H3</zorder>
+   <zorder>field_B2</zorder>
+   <zorder>field_F1</zorder>
+   <zorder>field_D1</zorder>
+   <zorder>field_B1</zorder>
+   <zorder>field_E1</zorder>
+   <zorder>field_C1</zorder>
+   <zorder>field_G1</zorder>
+   <zorder>field_F8</zorder>
+   <zorder>field_D8</zorder>
+   <zorder>field_B8</zorder>
+   <zorder>field_E8</zorder>
+   <zorder>field_C8</zorder>
+   <zorder>field_G8</zorder>
+   <zorder>topTimer</zorder>
+   <zorder>topLine</zorder>
+   <zorder>outcome</zorder>
+   <zorder>bottomTimer</zorder>
+   <zorder>bottomLine</zorder>
   </widget>
   <action name="actionCopy">
    <property name="text">

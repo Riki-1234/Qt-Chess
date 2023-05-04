@@ -1,4 +1,5 @@
 #include "chessboard.hpp"
+#include "chessgame.hpp"
 #include "bishop.hpp"
 #include "rook.hpp"
 #include "queen.hpp"
@@ -6,10 +7,9 @@
 #include "knight.hpp"
 #include "king.hpp"
 #include <utility>
+#include <random>
 
-ChessBoard::ChessBoard() {}
-
-std::map<posFileRank, ChessPiece> ChessBoard::initializeBoard() {
+std::map<posFileRank, ChessPiece> ChessBoard::initializeBoard(PieceColor pieceColor) {
     std::map<posFileRank, ChessPiece> chessBoard;
     for(int i = 0; i < m_files.length(); i++) {
         for(int j = 0; j < m_ranks.length(); j++) {
@@ -17,30 +17,31 @@ std::map<posFileRank, ChessPiece> ChessBoard::initializeBoard() {
         }
     }
 
-    chessBoard["A1"] = ChessPiece::B_Rook;
-    chessBoard["B1"] = ChessPiece::B_Knight;
-    chessBoard["C1"] = ChessPiece::B_Bishop;
-    chessBoard["D1"] = ChessPiece::B_King;
-    chessBoard["E1"] = ChessPiece::B_Queen;
-    chessBoard["F1"] = ChessPiece::B_Bishop;
-    chessBoard["G1"] = ChessPiece::B_Knight;
-    chessBoard["H1"] = ChessPiece::B_Rook;
+
+    chessBoard["A1"] = pieceColor == PieceColor::Black ? ChessPiece::B_Rook : ChessPiece::W_Rook;
+    chessBoard["B1"] = pieceColor == PieceColor::Black ? ChessPiece::B_Knight : ChessPiece::W_Knight;
+    chessBoard["C1"] = pieceColor == PieceColor::Black ? ChessPiece::B_Bishop : ChessPiece::W_Bishop;
+    chessBoard["D1"] = pieceColor == PieceColor::Black ? ChessPiece::B_King : ChessPiece::W_King;
+    chessBoard["E1"] = pieceColor == PieceColor::Black ? ChessPiece::B_Queen : ChessPiece::W_Queen;
+    chessBoard["F1"] = pieceColor == PieceColor::Black ? ChessPiece::B_Bishop : ChessPiece::W_Bishop;
+    chessBoard["G1"] = pieceColor == PieceColor::Black ? ChessPiece::B_Knight : ChessPiece::W_Knight;
+    chessBoard["H1"] = pieceColor == PieceColor::Black ? ChessPiece::B_Rook : ChessPiece::W_Rook;
 
     for(int i = 0; i < m_files.length(); i++) {
-        chessBoard[std::string(1, m_files[i]) + std::string(1, '2')] = ChessPiece::B_Pawn;
+        chessBoard[std::string(1, m_files[i]) + std::string(1, '2')] = pieceColor == PieceColor::Black ? ChessPiece::B_Pawn : ChessPiece::W_Pawn;
     }
 
-    chessBoard["A8"] = ChessPiece::W_Rook;
-    chessBoard["B8"] = ChessPiece::W_Knight;
-    chessBoard["C8"] = ChessPiece::W_Bishop;
-    chessBoard["D8"] = ChessPiece::W_King;
-    chessBoard["E8"] = ChessPiece::W_Queen;
-    chessBoard["F8"] = ChessPiece::W_Bishop;
-    chessBoard["G8"] = ChessPiece::W_Knight;
-    chessBoard["H8"] = ChessPiece::W_Rook;
+    chessBoard["A8"] = pieceColor == PieceColor::Black ? ChessPiece::W_Rook : ChessPiece::B_Rook;
+    chessBoard["B8"] = pieceColor == PieceColor::Black ? ChessPiece::W_Knight : ChessPiece::B_Knight;
+    chessBoard["C8"] = pieceColor == PieceColor::Black ? ChessPiece::W_Bishop : ChessPiece::B_Bishop;
+    chessBoard["D8"] = pieceColor == PieceColor::Black ? ChessPiece::W_King : ChessPiece::B_King;
+    chessBoard["E8"] = pieceColor == PieceColor::Black ? ChessPiece::W_Queen : ChessPiece::B_Queen;
+    chessBoard["F8"] = pieceColor == PieceColor::Black ? ChessPiece::W_Bishop : ChessPiece::B_Bishop;
+    chessBoard["G8"] = pieceColor == PieceColor::Black ? ChessPiece::W_Knight : ChessPiece::B_Knight;
+    chessBoard["H8"] = pieceColor == PieceColor::Black ? ChessPiece::W_Rook : ChessPiece::B_Rook;
 
     for(int i = 0; i < m_files.length(); i++) {
-        chessBoard[std::string(1, m_files[i]) + std::string(1, '7')] = ChessPiece::W_Pawn;
+        chessBoard[std::string(1, m_files[i]) + std::string(1, '7')] = pieceColor == PieceColor::Black ? ChessPiece::W_Pawn : ChessPiece::B_Pawn;
     }
     return chessBoard;
 }
@@ -103,7 +104,14 @@ std::vector<posFileRank> ChessBoard::getEnemyMoves(const std::vector<ChessPiece>
     std::vector<posFileRank> enemyMoves;
     for(auto it = ChessBoard::m_chessBoard.begin(); it != ChessBoard::m_chessBoard.end(); it++) {
         if(std::count(enemyPieces.begin(), enemyPieces.end(), it->second) && (it->second != ChessPiece::B_King && it->second != ChessPiece::W_King)) {
-            std::vector<posFileRank> oneEnemyPieceValidMoves = ChessBoard::getValidMoves(ChessBoard::posFileRankToPosXY(it->first), it->second);
+            std::vector<posFileRank> oneEnemyPieceValidMoves;
+            if(it->second != ChessPiece::B_Pawn || it->second != ChessPiece::W_Pawn) {
+                oneEnemyPieceValidMoves = ChessBoard::getValidMoves(ChessBoard::posFileRankToPosXY(it->first), it->second);
+            }
+            else {
+                Pawn pawn(ChessBoard::posFileRankToPosXY(it->first));
+                oneEnemyPieceValidMoves = pawn.getAttackMoves();
+            }
             enemyMoves.insert(enemyMoves.end(), oneEnemyPieceValidMoves.begin(), oneEnemyPieceValidMoves.end());
         }
     }
@@ -135,4 +143,44 @@ bool ChessBoard::isEnemyAttackingPiece(posFileRank sourcePos, posFileRank destPo
     return false;
 }
 
-std::map<posFileRank, ChessPiece> ChessBoard::m_chessBoard = ChessBoard::initializeBoard();
+bool ChessBoard::isMovePossible(bool isTopTimerActive, bool isBottomTimerActive, ChessPiece piece, ChessPiece king) {
+    if(ChessGame::isCheckMate(ChessPiece::B_King) || ChessGame::isCheckMate(ChessPiece::W_King)) {
+        return false;
+    }
+    if(ChessGame::isCheck(piece) && piece != king) {
+        return false;
+    }
+    if(contains(b_pieces, piece) && ChessGame::getCurrentPlayer() != PieceColor::Black) {
+        return false;
+    }
+    if(!isTopTimerActive && ChessBoard::getPieceColor() != PieceColor::Black && contains(b_pieces, piece)) {
+        return false;
+    }
+    else if(!isTopTimerActive && ChessBoard::getPieceColor() == PieceColor::Black && contains(w_pieces, piece)) {
+        return false;
+    }
+    else if(!isBottomTimerActive && ChessBoard::getPieceColor() != PieceColor::Black && contains(w_pieces, piece)) {
+        return false;
+    }
+    else if(!isBottomTimerActive && ChessBoard::getPieceColor() == PieceColor::Black && contains(b_pieces, piece)) {
+        return false;
+    }
+    return true;
+}
+
+PieceColor ChessBoard::m_pieceColor = PieceColor::NoColor;
+
+PieceColor ChessBoard::decidePieceColor() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(1, 2);
+
+    int option = dis(gen);
+    return m_pieceColor = option == 1 ? PieceColor::White : PieceColor::Black;
+}
+
+PieceColor ChessBoard::getPieceColor() {
+    return m_pieceColor;
+}
+
+std::map<posFileRank, ChessPiece> ChessBoard::m_chessBoard = ChessBoard::initializeBoard(decidePieceColor());

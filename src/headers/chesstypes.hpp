@@ -26,6 +26,12 @@ enum class ChessPiece {
     B_Pawn
 };
 
+enum class PieceColor {
+    NoColor,
+    White,
+    Black
+};
+
 static const std::vector<ChessPiece> w_pieces {
     ChessPiece::W_King, ChessPiece::W_Queen, ChessPiece::W_Bishop, ChessPiece::W_Knight, ChessPiece::W_Rook, ChessPiece::W_Pawn
 };
